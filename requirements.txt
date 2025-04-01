@@ -1,1 +1,1 @@
-
+# No external dependencies are required for PySort.
