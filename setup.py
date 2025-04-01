@@ -1,20 +1,21 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='pysort',
-    version='0.1.2',
+    name='arrangelt',
+    version='0.1.0',
     author='Austin Pratt',
     author_email='183548723+NullAce@users.noreply.github.com',
-    description='A python file sorting library.',
+    description='A Python library for sorting and organizing files.',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
-    url='https://github.com/NullAce/PySort',
+    url='https://github.com/NullAce/arrangelt',
     packages=find_packages(),
     classifiers=[
         'Programming Language :: Python :: 3',
-        'License :: OSI Approved :: Apache Software License',  # Updated license classifier
+        'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
     ],
     python_requires='>=3.6',
-    license_files=['LICENSE'],  # Ensure your LICENSE file is included
+    license='Apache License 2.0',
+    license_files=['LICENSE'],
 )

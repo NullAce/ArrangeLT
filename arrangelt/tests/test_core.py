@@ -1,8 +1,8 @@
 import unittest
 import os
-from pysort.core import alth_sort, ext_sort  # Import the standalone functions
+from arrangelt.core import alth_sort, ext_sort  # Import the standalone functions
 
-class TestPySort(unittest.TestCase):
+class TestArrangeLT(unittest.TestCase):
     def setUp(self):
         """Set up a temporary test directory with sample files."""
         self.test_dir = "test_folder"

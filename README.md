@@ -1,13 +1,13 @@
-# PySort
+# ArrangeLT
 
 ## Overview
-PySort is a Python library designed to help users quickly and efficiently sort and organize files in a directory. It provides functionality to sort files alphabetically, group files by extensions, and more. PySort is lightweight, easy to use, and highly extensible.
+ArrangeLT is a Python library designed to help users quickly and efficiently sort and organize files in a directory. It provides functionality to sort files alphabetically, group files by extensions, and more. ArrangeLT is lightweight, easy to use, and highly extensible.
 
 ## Installation
 To install the library, you can use pip. Run the following command in your terminal:
 
 ```
-pip install pysort
+pip install arrangelt
 ```
 
 ## Usage
@@ -15,7 +15,7 @@ Here is a simple example of how to use the library:
 
 ### Sorting Files Alphabetically
 ```python
-from pysort import alth_sort
+from arrangelt import alth_sort
 
 # Sort files alphabetically in ascending order (default)
 sorted_files = alth_sort("path/to/directory", style="asc", include_path=True)
@@ -28,7 +28,7 @@ print(sorted_files)
 
 ### Grouping Files by Extension
 ```python
-from pysort import ext_sort
+from arrangelt import ext_sort
 
 # Group files by their extensions
 grouped_files = ext_sort("path/to/directory", include_path=True)
