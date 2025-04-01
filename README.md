@@ -15,7 +15,7 @@ Here is a simple example of how to use the library:
 
 ### Sorting Files Alphabetically
 ```python
-from pysort.core import alth_sort
+from pysort import alth_sort
 
 # Sort files alphabetically in ascending order (default)
 sorted_files = alth_sort("path/to/directory", style="asc", include_path=True)
@@ -24,15 +24,11 @@ print(sorted_files)
 # Sort files alphabetically in descending order
 sorted_files = alth_sort("path/to/directory", style="desc", include_path=False)
 print(sorted_files)
-
-# Sort only specific file types (e.g., .txt and .csv)
-sorted_files = alth_sort("path/to/directory", style="asc", include_path=True, file_types=[".txt", ".csv"])
-print(sorted_files)
 ```
 
 ### Grouping Files by Extension
 ```python
-from pysort.core import ext_sort
+from pysort import ext_sort
 
 # Group files by their extensions
 grouped_files = ext_sort("path/to/directory", include_path=True)
@@ -51,7 +47,6 @@ print(grouped_files)
 - **Alphabetical Sorting**:
   - Sort files in ascending or descending order by their names.
   - Option to include or exclude the full file path in the output.
-  - Filter files by specific extensions (e.g., `.txt`, `.csv`).
 
 - **Extension Grouping**:
   - Group files by their extensions.
@@ -62,4 +57,4 @@ print(grouped_files)
   - Provides clear error messages for invalid paths, permissions, and other issues.
 
 ## License
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the Apache-2.0 License - see the LICENSE file for details.
