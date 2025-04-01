@@ -12,8 +12,9 @@ setup(
     packages=find_packages(),
     classifiers=[
         'Programming Language :: Python :: 3',
-        'License :: OSI Approved :: MIT License',
+        'License :: OSI Approved :: Apache Software License',  # Updated license classifier
         'Operating System :: OS Independent',
     ],
     python_requires='>=3.6',
+    license_files=['LICENSE'],  # Ensure your LICENSE file is included
 )
