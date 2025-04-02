@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.3.2] - 02-04-2025
+### Fixed
+- Fixed detrimental error when encountering a symbolic link loop. Now skips symbolic links or directories that will cause an infinite loop. Also skips unreachable folders that throw errors.
+
 ## [v0.3.1] - 02-04-2025
 ### Added
 - Added support for recursive file searching with a `depth` parameter for `alth_sort`, `ext_sort`, and `size_sort`.

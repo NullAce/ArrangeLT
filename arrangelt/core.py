@@ -27,14 +27,22 @@ def alth_sort(path: str, style: str = "asc", include_path: bool = True, depth: i
     def get_files(current_path, current_depth):
         files = []
         for entry in os.scandir(current_path):
-            if entry.is_file():
-                files.append(entry.path)
-            elif entry.is_dir():
-                # Handle depth logic
-                if depth is None:
-                    continue  # Skip subfolders if depth is None
-                if depth == 0 or current_depth < depth:
-                    files.extend(get_files(entry.path, current_depth + 1))
+            try:
+                if entry.is_file():
+                    files.append(entry.path)
+                elif entry.is_dir():
+                    # Skip symbolic links to avoid infinite loops
+                    if os.path.islink(entry.path):
+                        continue
+
+                    # Handle depth logic
+                    if depth is None:
+                        continue  # Skip subfolders if depth is None
+                    if depth == 0 or current_depth < depth:
+                        files.extend(get_files(entry.path, current_depth + 1))
+            except (OSError, PermissionError):
+                # Skip directories or files that cannot be accessed
+                continue
         return files
 
     try:
@@ -81,14 +89,22 @@ def ext_sort(path: str, include_path: bool = True, include_types: list = None, e
     def get_files(current_path, current_depth):
         files = []
         for entry in os.scandir(current_path):
-            if entry.is_file():
-                files.append(entry.path)
-            elif entry.is_dir():
-                # Handle depth logic
-                if depth is None:
-                    continue  # Skip subfolders if depth is None
-                if depth == 0 or current_depth < depth:
-                    files.extend(get_files(entry.path, current_depth + 1))
+            try:
+                if entry.is_file():
+                    files.append(entry.path)
+                elif entry.is_dir():
+                    # Skip symbolic links to avoid infinite loops
+                    if os.path.islink(entry.path):
+                        continue
+
+                    # Handle depth logic
+                    if depth is None:
+                        continue  # Skip subfolders if depth is None
+                    if depth == 0 or current_depth < depth:
+                        files.extend(get_files(entry.path, current_depth + 1))
+            except (OSError, PermissionError):
+                # Skip directories or files that cannot be accessed
+                continue
         return files
 
     try:
@@ -131,10 +147,10 @@ def size_sort(path: str, size_categories: dict = None, include_path: bool = True
         depth (int): The depth of subfolder search. Defaults to None (no subfolder search).
             Example:
             {
-            "small": (0, 10 * 1024 * 1024),   # Files smaller than 10 MB
-            "medium": (10 * 1024 * 1024, 100 * 1024 * 1024),  # Files between 10 MB and 100 MB
-            "large": (100 * 1024 * 1024, 1 * 1024 * 1024 * 1024),  # Files between 100 MB and 1 GB
-            "extra_large": (1 * 1024 * 1024 * 1024, float('inf'))  # Files larger than 1 GB
+                "small": (0, 10 * 1024 * 1024),   # Files smaller than 10 MB
+                "medium": (10 * 1024 * 1024, 100 * 1024 * 1024),  # Files between 10 MB and 100 MB
+                "large": (100 * 1024 * 1024, 1 * 1024 * 1024 * 1024),  # Files between 100 MB and 1 GB
+                "extra_large": (1 * 1024 * 1024 * 1024, float('inf'))  # Files larger than 1 GB
             }
 
     Returns:
@@ -175,14 +191,22 @@ def size_sort(path: str, size_categories: dict = None, include_path: bool = True
     def get_files(current_path, current_depth):
         files = []
         for entry in os.scandir(current_path):
-            if entry.is_file():
-                files.append(entry.path)
-            elif entry.is_dir():
-                # Handle depth logic
-                if depth is None:
-                    continue  # Skip subfolders if depth is None
-                if depth == 0 or current_depth < depth:
-                    files.extend(get_files(entry.path, current_depth + 1))
+            try:
+                if entry.is_file():
+                    files.append(entry.path)
+                elif entry.is_dir():
+                    # Skip symbolic links to avoid infinite loops
+                    if os.path.islink(entry.path):
+                        continue
+
+                    # Handle depth logic
+                    if depth is None:
+                        continue  # Skip subfolders if depth is None
+                    if depth == 0 or current_depth < depth:
+                        files.extend(get_files(entry.path, current_depth + 1))
+            except (OSError, PermissionError):
+                # Skip directories or files that cannot be accessed
+                continue
         return files
 
     try:
