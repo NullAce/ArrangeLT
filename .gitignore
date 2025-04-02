@@ -1,13 +1,7 @@
-# Exclude Python bytecode cache
 __pycache__/
-
-# Exclude pytest cache
 .pytest_cache/
-
-# Exclude setuptools egg info
 *.egg-info/
-
+help.txt
 test.py
-
 build/
 dist/
