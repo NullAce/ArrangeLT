@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='arrangelt',
-    version='0.1.0',
+    version='0.2.0',
     author='Austin Pratt',
     author_email='183548723+NullAce@users.noreply.github.com',
     description='A Python library for sorting and organizing files.',
