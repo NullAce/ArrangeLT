@@ -1,7 +1,6 @@
 import os
-import glob
 
-def alth_sort(path: str, style: str = "asc", include_path: bool = True) -> list:
+def alth_sort(path: str, style: str = "asc", include_path: bool = True, depth: int = None) -> list:
     """
     Sort files in a directory alphabetically in ascending or descending order.
 
@@ -9,13 +8,10 @@ def alth_sort(path: str, style: str = "asc", include_path: bool = True) -> list:
         path (str): The absolute directory path containing the files.
         style (str): Sorting style ('asc' for ascending, 'desc' for descending). Defaults to 'asc'.
         include_path (bool): Whether to include the full path in the output. Defaults to True.
+        depth (int): The depth of subfolder search. Defaults to None (no subfolder search).
 
     Returns:
         list: A sorted list of file paths or filenames.
-
-    Note:
-        This function does not recursively check subfolders for files. It only processes files
-        in the specified directory.
     """
     if not isinstance(path, str):
         raise TypeError("The 'path' argument must be a string.")
@@ -28,9 +24,21 @@ def alth_sort(path: str, style: str = "asc", include_path: bool = True) -> list:
     if style not in valid_styles:
         raise ValueError(f"Invalid style '{style}'. Valid options are: {valid_styles}")
 
+    def get_files(current_path, current_depth):
+        files = []
+        for entry in os.scandir(current_path):
+            if entry.is_file():
+                files.append(entry.path)
+            elif entry.is_dir():
+                # Handle depth logic
+                if depth is None:
+                    continue  # Skip subfolders if depth is None
+                if depth == 0 or current_depth < depth:
+                    files.extend(get_files(entry.path, current_depth + 1))
+        return files
+
     try:
-        files = glob.glob(os.path.join(path, '*'))
-        files = [file for file in files if os.path.isfile(file)]
+        files = get_files(path, 0)
     except PermissionError:
         raise PermissionError(f"Permission denied for accessing the directory '{path}'.")
 
@@ -49,7 +57,7 @@ def alth_sort(path: str, style: str = "asc", include_path: bool = True) -> list:
     return sorted_files
 
 
-def ext_sort(path: str, include_path: bool = True, include_types: list = None, exclude_types: list = None) -> dict:
+def ext_sort(path: str, include_path: bool = True, include_types: list = None, exclude_types: list = None, depth: int = None) -> dict:
     """
     Group files in a directory by their extensions.
 
@@ -58,13 +66,10 @@ def ext_sort(path: str, include_path: bool = True, include_types: list = None, e
         include_path (bool): Whether to include the full path in the output. Defaults to True.
         include_types (list): A list of file extensions to include (e.g., ['.txt', '.csv']). Defaults to None.
         exclude_types (list): A list of file extensions to exclude (e.g., ['.tmp', '.log']). Defaults to None.
+        depth (int): The depth of subfolder search. Defaults to None (no subfolder search).
 
     Returns:
         dict: A dictionary where keys are file extensions and values are lists of file paths or filenames.
-
-    Note:
-        This function does not recursively check subfolders for files. It only processes files
-        in the specified directory.
     """
     if not isinstance(path, str):
         raise TypeError("The 'path' argument must be a string.")
@@ -73,8 +78,21 @@ def ext_sort(path: str, include_path: bool = True, include_types: list = None, e
     if not os.path.isdir(path):
         raise ValueError(f"The path '{path}' is not a directory.")
 
+    def get_files(current_path, current_depth):
+        files = []
+        for entry in os.scandir(current_path):
+            if entry.is_file():
+                files.append(entry.path)
+            elif entry.is_dir():
+                # Handle depth logic
+                if depth is None:
+                    continue  # Skip subfolders if depth is None
+                if depth == 0 or current_depth < depth:
+                    files.extend(get_files(entry.path, current_depth + 1))
+        return files
+
     try:
-        files = glob.glob(os.path.join(path, '*'))
+        files = get_files(path, 0)
     except PermissionError:
         raise PermissionError(f"Permission denied for accessing the directory '{path}'.")
 
@@ -84,9 +102,6 @@ def ext_sort(path: str, include_path: bool = True, include_types: list = None, e
 
     ext_dict = {}
     for file in files:
-        if not os.path.isfile(file):  # Ensure it's a file
-            continue
-
         _, ext = os.path.splitext(file)
         ext = ext.lower() if ext else "no_extension"
 
@@ -105,28 +120,25 @@ def ext_sort(path: str, include_path: bool = True, include_types: list = None, e
     return ext_dict
 
 
-def size_sort(path: str, size_categories: dict = None, include_path: bool = True) -> dict:
+def size_sort(path: str, size_categories: dict = None, include_path: bool = True, depth: int = None) -> dict:
     """
     Categorize files in a directory based on their sizes.
 
     Args:
         path (str): The absolute directory path containing the files.
         size_categories (dict): A dictionary defining size categories. Defaults to predefined categories.
+        include_path (bool): Whether to include the full path in the output. Defaults to True.
+        depth (int): The depth of subfolder search. Defaults to None (no subfolder search).
             Example:
             {
-                "small": (0, 10 * 1024 * 1024),   # Files smaller than 10 MB
-                "medium": (10 * 1024 * 1024, 100 * 1024 * 1024),  # Files between 10 MB and 100 MB
-                "large": (100 * 1024 * 1024, 1 * 1024 * 1024 * 1024),  # Files between 100 MB and 1 GB
-                "extra_large": (1 * 1024 * 1024 * 1024, float('inf'))  # Files larger than 1 GB
+            "small": (0, 10 * 1024 * 1024),   # Files smaller than 10 MB
+            "medium": (10 * 1024 * 1024, 100 * 1024 * 1024),  # Files between 10 MB and 100 MB
+            "large": (100 * 1024 * 1024, 1 * 1024 * 1024 * 1024),  # Files between 100 MB and 1 GB
+            "extra_large": (1 * 1024 * 1024 * 1024, float('inf'))  # Files larger than 1 GB
             }
-        include_path (bool): Whether to include the full path in the output. Defaults to True.
 
     Returns:
         dict: A dictionary where keys are size categories and values are lists of file paths or filenames.
-
-    Note:
-        This function does not recursively check subfolders for files. It only processes files
-        in the specified directory.
     """
     if not isinstance(path, str):
         raise TypeError("The 'path' argument must be a string.")
@@ -160,8 +172,21 @@ def size_sort(path: str, size_categories: dict = None, include_path: bool = True
             if max_size < min_size:
                 raise ValueError(f"Invalid size range for category '{category}'. Maximum size must be greater than or equal to the minimum size.")
 
+    def get_files(current_path, current_depth):
+        files = []
+        for entry in os.scandir(current_path):
+            if entry.is_file():
+                files.append(entry.path)
+            elif entry.is_dir():
+                # Handle depth logic
+                if depth is None:
+                    continue  # Skip subfolders if depth is None
+                if depth == 0 or current_depth < depth:
+                    files.extend(get_files(entry.path, current_depth + 1))
+        return files
+
     try:
-        files = glob.glob(os.path.join(path, '*'))
+        files = get_files(path, 0)
     except PermissionError:
         raise PermissionError(f"Permission denied for accessing the directory '{path}'.")
 
@@ -172,11 +197,10 @@ def size_sort(path: str, size_categories: dict = None, include_path: bool = True
     size_dict = {category: [] for category in size_categories}
 
     for file in files:
-        if os.path.isfile(file):  # Ensure it's a file
-            file_size = os.path.getsize(file)
-            for category, (min_size, max_size) in size_categories.items():
-                if min_size <= file_size < max_size:
-                    size_dict[category].append(file if include_path else os.path.basename(file))
-                    break
+        file_size = os.path.getsize(file)
+        for category, (min_size, max_size) in size_categories.items():
+            if min_size <= file_size < max_size:
+                size_dict[category].append(file if include_path else os.path.basename(file))
+                break
 
     return size_dict

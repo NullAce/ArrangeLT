@@ -2,11 +2,11 @@ from setuptools import setup, find_packages
 
 setup(
     name='arrangelt',
-    version='0.2.0',
+    version='0.3.1',
     author='Austin Pratt',
     author_email='183548723+NullAce@users.noreply.github.com',
-    description='A Python library for sorting and organizing files.',
-    long_description=open('README.md').read(),
+    description='A Python library for sorting and organizing files into usable lists or dictionaries.',
+    long_description=open('README.md').read() +'\n\n' + open('CHANGELOG.md').read(),
     long_description_content_type='text/markdown',
     url='https://github.com/NullAce/arrangelt',
     packages=find_packages(),

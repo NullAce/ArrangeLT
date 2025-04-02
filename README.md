@@ -1,10 +1,10 @@
 # ArrangeLT
 
 ## Overview
-ArrangeLT is a Python library designed to help users quickly and efficiently sort and organize files in a directory. It provides functionality to sort files alphabetically, group files by extensions, categorize files by size, and more.
+ArrangeLT is a Python library designed to help users quickly and efficiently organize files in a directory into lists and dictionaries. It provides functionality to sort files alphabetically, by extensions, and by size.
 
 ## Installation
-To install the library, you can use pip. Run the following command in your terminal:
+To install the library, you can use pip. Run:
 
 ```
 pip install arrangelt
@@ -81,6 +81,9 @@ print(categorized_files)
   - Categorize files into size-based groups (e.g., small, medium, large).
   - Fully customizable size categories.
   - Option to include or exclude the full file path in the output.
+
+- **Recursive Behavior**:
+  - Allows for the specification of a depth for a recursive search. If left alone no subfolders are searched, 0 = Unlimited depth, 1 = Root and immediate sub folders, 2 = Root plus a depth of two sub folders, and so on.
 
 - **Error Handling**:
   - Provides clear error messages for invalid paths, permissions, and other issues.
